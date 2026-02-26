@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE Release)
 
 find_package(catkin REQUIRED COMPONENTS
-  livox_ros_driver
+  livox_ros_driver2
   roscpp
   sensor_msgs
 )
@@ -13,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_library(LIVOX_SDK_LIBRARY VERSION EXACT 2.3.0 liblivox_sdk_static.a /usr/local/lib)
 
 catkin_package(
-  CATKIN_DEPENDS livox_ros_driver roscpp sensor_msgs
+  CATKIN_DEPENDS livox_ros_driver2 roscpp sensor_msgs
   DEPENDS system_lib
 )
 

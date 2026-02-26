@@ -1,13 +1,13 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
-#include <livox_ros_driver/CustomMsg.h>
-#include <livox_ros_driver/CustomPoint.h>
+#include <livox_ros_driver2/CustomMsg.h>
+#include <livox_ros_driver2/CustomPoint.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
 
 
 ros::Publisher pointcloud_pub;
 
-sensor_msgs::PointCloud2 livox2pointcloud(const livox_ros_driver::CustomMsg::ConstPtr& livox_msg) {
+sensor_msgs::PointCloud2 livox2pointcloud(const livox_ros_driver2::CustomMsg::ConstPtr& livox_msg) {
     sensor_msgs::PointCloud2 cloud_msg;
     cloud_msg.header.frame_id = livox_msg->header.frame_id;
     cloud_msg.header.stamp = livox_msg->header.stamp;
@@ -43,7 +43,7 @@ sensor_msgs::PointCloud2 livox2pointcloud(const livox_ros_driver::CustomMsg::Con
     cloud_msg.fields[6].name = "line";
     cloud_msg.fields[6].count = 1;
     cloud_msg.fields[6].datatype = sensor_msgs::PointField::UINT8;
-    cloud_msg.point_step = sizeof(livox_ros_driver::CustomPoint);
+    cloud_msg.point_step = sizeof(livox_ros_driver2::CustomPoint);
     cloud_msg.row_step = cloud_msg.width * cloud_msg.point_step;
     cloud_msg.data.resize(cloud_msg.row_step);
 
@@ -78,10 +78,10 @@ sensor_msgs::PointCloud2 livox2pointcloud(const livox_ros_driver::CustomMsg::Con
 }
 
 // Callback function for custom message subscriber
-void customMsgCallback(const livox_ros_driver::CustomMsg::ConstPtr& livox_msg)
+void customMsgCallback(const livox_ros_driver2::CustomMsg::ConstPtr& livox_msg)
 {
     pointcloud_pub.publish(livox2pointcloud(livox_msg));
-    ROS_INFO_STREAM("Converted livox_ros_driver::CustomMsg to sensor_msgs::PointClouds2");
+    ROS_INFO_STREAM("Converted livox_ros_driver2::CustomMsg to sensor_msgs::PointClouds2");
 }
 
 int main(int argc, char** argv)
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
     nh.param<std::string>("livox_topic", livox_topic, "/livox/lidar");
 
     pointcloud_pub = nh.advertise<sensor_msgs::PointCloud2>(pointcloud_topic, 10);
-    auto custom_msg_sub = nh.subscribe<livox_ros_driver::CustomMsg>(livox_topic, 10, customMsgCallback);
+    auto custom_msg_sub = nh.subscribe<livox_ros_driver2::CustomMsg>(livox_topic, 10, customMsgCallback);
 
     ros::spin();
     ros::spin();
